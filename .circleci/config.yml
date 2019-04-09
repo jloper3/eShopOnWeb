@@ -20,7 +20,7 @@ jobs:
       - image: circleci/python:3.6.1
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
           docker_layer_caching: true
       - run: |
          python3 -m venv venv
@@ -29,7 +29,7 @@ jobs:
          eval $(aws ecr get-login --no-include-email --region us-east-1)
          docker tag local $REGISTRY:$CIRCLE_SHA1 
          docker push $REGISTRY:$CIRCLE_SHA1
-         curl -k -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator  
+         curl -k -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
          chmod +x /usr/local/bin/aws-iam-authenticator
          aws eks update-kubeconfig --name Cluster-sXlPflDQXLqR          
          envsubst < deployment.yaml 
