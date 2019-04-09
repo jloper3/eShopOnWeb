@@ -5,6 +5,8 @@ jobs:
       - image: docker
     steps:
       - checkout
+      - setup_remote_docker: 
+          docker_layer_caching: true 
       - run: docker build -t eshop:$CIRCLE_SHA1 -f src/Web/Dockerfile .
   test:
     docker:
