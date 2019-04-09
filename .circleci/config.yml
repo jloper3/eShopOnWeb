@@ -30,8 +30,9 @@ jobs:
          eval $(aws ecr get-login --no-include-email --region us-east-1)
          docker tag local:$CIRCLE_SHA1 $REGISTRY:$CIRCLE_SHA1 
          docker push $REGISTRY:$CIRCLE_SHA1
-         curl -k -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
-         chmod +x /usr/local/bin/aws-iam-authenticator
+         curl -k -o /tmp/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
+         chmod +x /tmp/bin/aws-iam-authenticator
+         export PATH=$PATH:/tmp
          aws eks update-kubeconfig --name Cluster-sXlPflDQXLqR          
          envsubst < deployment.yaml 
        
