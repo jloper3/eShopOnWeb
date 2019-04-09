@@ -5,16 +5,17 @@ jobs:
       - image: docker
     steps:
       - checkout
-      - run: docker build -t jloper3/eshop:$CIRCLE_SHA1 -f src/Web/Dockerfile
+      - run: docker build -t eshop:$CIRCLE_SHA1 -f src/Web/Dockerfile .
   test:
     docker:
       - image: docker
     steps:
       - checkout
-      - run: echo hi
+      - run: docker run eshop:$CIRCLE_SHA1 echo
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
       - test
+        requires: build
