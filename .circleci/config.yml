@@ -7,13 +7,19 @@ jobs:
       - checkout
       - setup_remote_docker: 
           docker_layer_caching: true 
-      - run: docker build -t eshop:$CIRCLE_SHA1 -f src/Web/Dockerfile .
+      - run: |
+          docker build -t local -f src/Web/Dockerfile .
+          pip install aws-cli
+          eval $(aws ecr get-login --no-include-email --region us-east-1)
+          docker tag local $REGISTRY:$CIRCLE_SHA1
+          docker push $AWS_ECR_REGISTRY:$TAG
   test:
     docker:
       - image: microsoft/dotnet:2.2-sdk
     steps:
       - checkout
       - run: dotnet test
+       
 workflows:
   version: 2
   build_and_test:
@@ -22,3 +28,6 @@ workflows:
          requires: 
            - test
       - test
+      - deploy:
+         requires:
+           - build
