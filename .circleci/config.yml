@@ -5,7 +5,7 @@ jobs:
       - image: docker
     steps:
       - checkout
-      - run: docker build -t jloper3/eshop:$CIRCLE_SHA1
+      - run: docker build -t jloper3/eshop:$CIRCLE_SHA1 -f src/Web/Dockerfile
   test:
     docker:
       - image: docker
