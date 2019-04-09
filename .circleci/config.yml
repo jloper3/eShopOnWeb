@@ -20,7 +20,7 @@ jobs:
       - image: circleci/python:3.6.1
     steps:
       - run: |
-         pip install aws-cli
+         pip install awscli
          eval $(aws ecr get-login --no-include-email --region us-east-1)
          docker tag local $REGISTRY:$CIRCLE_SHA1 
          docker push $REGISTRY:$CIRCLE_SHA1
